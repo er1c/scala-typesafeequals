@@ -3,7 +3,3 @@ options:
     url: core/
     menu_section: core
 
-    nested_options:
-      - title: Example
-        url: core/example.html
-        menu_section: example

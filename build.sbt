@@ -21,53 +21,15 @@ addCommandAlias("release",    ";+clean ;ci-release ;unidoc ;microsite/publishMic
 // ---------------------------------------------------------------------------
 // Dependencies
 
-/** Standard FP library for Scala:
-  * [[https://typelevel.org/cats/]]
-  */
-val CatsVersion = "2.1.1"
-
-/** FP library for describing side-effects:
-  * [[https://typelevel.org/cats-effect/]]
-  */
-val CatsEffectVersion = "2.1.3"
-
-/** First-class support for type-classes:
-  * [[https://github.com/typelevel/simulacrum]]
-  */
-val SimulacrumVersion = "1.0.0"
-
 /** For macros that are supported on older Scala versions.
   * Not needed starting with Scala 2.13.
   */
 val MacroParadiseVersion = "2.1.1"
 
 /** Library for unit-testing:
-  * [[https://github.com/monix/minitest/]]
   *  - [[https://github.com/scalatest/scalatest]]
-  *  - [[https://github.com/scalatest/scalatestplus-scalacheck/]]
   */
 val ScalaTestVersion = "3.2.0"
-val ScalaTestPlusVersion = "3.2.0.0"
-
-/** Library for property-based testing:
-  * [[https://www.scalacheck.org/]]
-  */
-val ScalaCheckVersion = "1.14.3"
-
-/** Compiler plugin for working with partially applied types:
-  * [[https://github.com/typelevel/kind-projector]]
-  */
-val KindProjectorVersion = "0.11.0"
-
-/** Compiler plugin for fixing "for comprehensions" to do desugaring w/o `withFilter`:
-  * [[https://github.com/typelevel/kind-projector]]
-  */
-val BetterMonadicForVersion = "0.3.1"
-
-/** Compiler plugin for silencing compiler warnings:
-  * [[https://github.com/ghik/silencer]]
-  */
-val SilencerVersion = "1.7.0"
 
 /** Used for publishing the microsite:
   * [[https://github.com/47degrees/github4s]]
@@ -96,28 +58,22 @@ lazy val sharedSettings = Seq(
 
   organization := "io.github.er1c",
   scalaVersion := "2.13.3",
-  crossScalaVersions := Seq("2.12.11", "2.13.3"),
+  crossScalaVersions := Seq("2.11.12", "2.12.11", "2.13.3"),
+
+  scalacOptions += "-language:implicitConversions,experimental.macros",
 
   // More version specific compiler options
   scalacOptions ++= (CrossVersion.partialVersion(scalaVersion.value) match {
-    case Some((2, v)) if v >= 13 =>
+    case Some((2, v)) if v >= 12 =>
       Seq(
-        // Replaces macro-paradise in Scala 2.13
-        // No
-        //"-Ymacro-annotations",
+        "-Ywarn-macros:after"
       )
     case _ =>
-      Seq.empty
+        Seq.empty
   }),
 
   // Turning off fatal warnings for doc generation
   scalacOptions.in(Compile, doc) ~= filterConsoleScalacOptions,
-  // Silence all warnings from src_managed files
-  scalacOptions += "-P:silencer:pathFilters=.*[/]src_managed[/].*",
-
-  addCompilerPlugin("org.typelevel" % "kind-projector" % KindProjectorVersion cross CrossVersion.full),
-  addCompilerPlugin("com.olegpy" %% "better-monadic-for" % BetterMonadicForVersion),
-  addCompilerPlugin("com.github.ghik" % "silencer-plugin" % SilencerVersion cross CrossVersion.full),
 
   // ScalaDoc settings
   autoAPIMappings := true,
@@ -148,7 +104,8 @@ lazy val sharedSettings = Seq(
   licenses := Seq("APL2" -> url("http://www.apache.org/licenses/LICENSE-2.0.txt")),
   homepage := Some(url(projectWebsiteFullURL.value)),
   headerLicense := Some(HeaderLicense.Custom(
-    s"""|Copyright (c) 2020 the ${projectTitle.value} contributors.
+    s"""|Copyright (c) 2019 Frugal Mechanic (http://frugalmechanic.com)
+        |Copyright (c) 2020 the ${projectTitle.value} contributors.
         |See the project homepage at: ${projectWebsiteFullURL.value}
         |
         |Licensed under the Apache License, Version 2.0 (the "License");
@@ -176,7 +133,14 @@ lazy val sharedSettings = Seq(
       name="Eric Peters",
       email="eric@peters.org",
       url=url("https://github.com/er1c")
-    )),
+    ),
+    Developer(
+      id="tpunder",
+      name="Tim Underwood",
+      email="timunderwood@gmail.com",
+      url=url("http://github.com/tpunder")
+    )
+  ),
 
   // -- Settings meant for deployment on oss.sonatype.org
   sonatypeProfileName := organization.value,
@@ -227,7 +191,7 @@ def defaultCrossProjectConfiguration(pr: CrossProject) = {
 
 lazy val root = project.in(file("."))
   .enablePlugins(ScalaUnidocPlugin)
-  .aggregate(coreJVM, coreJS)
+  .aggregate(coreJVM, coreJS, coreTestsJVM, coreTestsJS)
   .configure(defaultPlugins)
   .settings(sharedSettings)
   .settings(doNotPublishArtifact)
@@ -292,27 +256,31 @@ lazy val site = project.in(file("site"))
     )
   }
 
-lazy val core = crossProject(JSPlatform, JVMPlatform)
-  .crossType(CrossType.Full)
+lazy val core = crossProject(JSPlatform, JVMPlatform)//, NativePlatform)
+  .crossType(CrossType.Pure)
   .in(file("core"))
   .configureCross(defaultCrossProjectConfiguration)
   .settings(
-    name := "scala-typesafeequals",
-    libraryDependencies ++= Seq(
-      "org.typelevel"  %%% "simulacrum"       % SimulacrumVersion % Provided,
-      "org.typelevel"  %%% "cats-core"        % CatsVersion,
-      "org.typelevel"  %%% "cats-effect"      % CatsEffectVersion,
-      // For testing
-      "org.scalatest"     %%% "scalatest"        % ScalaTestVersion % Test,
-      "org.scalatestplus" %%% "scalacheck-1-14"  % ScalaTestPlusVersion % Test,
-      "org.scalacheck"    %%% "scalacheck"       % ScalaCheckVersion % Test,
-      "org.typelevel"     %%% "cats-laws"        % CatsVersion % Test,
-      "org.typelevel"     %%% "cats-effect-laws" % CatsEffectVersion % Test,
-    ),
+    name := "scala-typesafeequals"
   )
 
 lazy val coreJVM = core.jvm
 lazy val coreJS  = core.js
+
+lazy val coreTests = crossProject(JSPlatform, JVMPlatform)
+  .crossType(CrossType.Pure)
+  .in(file("core-tests"))
+  .dependsOn(core)
+  .configureCross(defaultCrossProjectConfiguration)
+  .settings(doNotPublishArtifact)
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.scalatest" %%% "scalatest" % ScalaTestVersion % Test,
+    ),
+  )
+
+lazy val coreTestsJVM = coreTests.jvm
+lazy val coreTestsJS = coreTests.js
 
 // Reloads build.sbt changes whenever detected
 Global / onChangedBuildSource := ReloadOnSourceChanges
