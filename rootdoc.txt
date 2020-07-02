@@ -1,0 +1,6 @@
+Macro-based typesafe === and =!= operators
+
+Links:
+
+ - [[https://er1c.github.io/scala-typesafeequals/ Homepage]]
+ - [[https://github.com/er1c/scala-typesafeequals GitHub repository]]
