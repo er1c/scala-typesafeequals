@@ -1,15 +1,92 @@
-<!DOCTYPE html><html><head><title>Type Safe Equals</title><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Eric Peters" /><meta name="description" content="Macro-based typesafe === and =!= operators" /><meta name="og:image" content="/scala-typesafeequals/img/poster.png" /><meta name="image" property="og:image" content="/scala-typesafeequals/img/poster.png" /><meta name="og:title" content="Type Safe Equals" /><meta name="title" property="og:title" content="Type Safe Equals" /><meta name="og:site_name" content="Type Safe Equals" /><meta name="og:url" content="https://er1c.github.io/scala-typesafeequals/" /><meta name="og:type" content="website" /><meta name="og:description" content="Macro-based typesafe === and =!= operators" /><link rel="icon" type="image/png" href="/scala-typesafeequals/img/favicon.png" /><meta name="twitter:title" content="Type Safe Equals" /><meta name="twitter:image" content="https://er1c.github.io/scala-typesafeequals/img/poster.png" /><meta name="twitter:description" content="Macro-based typesafe === and =!= operators" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:creator" content="@ericpeters" /><link rel="icon" type="image/png" sizes="16x16" href="/scala-typesafeequals/img/favicon16x16.png" /><link rel="icon" type="image/png" sizes="24x24" href="/scala-typesafeequals/img/favicon24x24.png" /><link rel="icon" type="image/png" sizes="32x32" href="/scala-typesafeequals/img/favicon32x32.png" /><link rel="icon" type="image/png" sizes="48x48" href="/scala-typesafeequals/img/favicon48x48.png" /><link rel="icon" type="image/png" sizes="57x57" href="/scala-typesafeequals/img/favicon57x57.png" /><link rel="icon" type="image/png" sizes="60x60" href="/scala-typesafeequals/img/favicon60x60.png" /><link rel="icon" type="image/png" sizes="64x64" href="/scala-typesafeequals/img/favicon64x64.png" /><link rel="icon" type="image/png" sizes="70x70" href="/scala-typesafeequals/img/favicon70x70.png" /><link rel="icon" type="image/png" sizes="72x72" href="/scala-typesafeequals/img/favicon72x72.png" /><link rel="icon" type="image/png" sizes="76x76" href="/scala-typesafeequals/img/favicon76x76.png" /><link rel="icon" type="image/png" sizes="96x96" href="/scala-typesafeequals/img/favicon96x96.png" /><link rel="icon" type="image/png" sizes="114x114" href="/scala-typesafeequals/img/favicon114x114.png" /><link rel="icon" type="image/png" sizes="120x120" href="/scala-typesafeequals/img/favicon120x120.png" /><link rel="icon" type="image/png" sizes="128x128" href="/scala-typesafeequals/img/favicon128x128.png" /><link rel="icon" type="image/png" sizes="144x144" href="/scala-typesafeequals/img/favicon144x144.png" /><link rel="icon" type="image/png" sizes="150x150" href="/scala-typesafeequals/img/favicon150x150.png" /><link rel="icon" type="image/png" sizes="152x152" href="/scala-typesafeequals/img/favicon152x152.png" /><link rel="icon" type="image/png" sizes="196x196" href="/scala-typesafeequals/img/favicon196x196.png" /><link rel="icon" type="image/png" sizes="310x310" href="/scala-typesafeequals/img/favicon310x310.png" /><link rel="icon" type="image/png" sizes="310x150" href="/scala-typesafeequals/img/favicon310x150.png" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" /><link rel="stylesheet" href="/scala-typesafeequals/highlight/styles/atom-one-light.css" /><link rel="stylesheet" href="/scala-typesafeequals/css/light-style.css" /></head><body class="home"><nav id="navigation" aria-labelledby="main-navigation"><div class="navbar-wrapper container"><div class="navigation-brand"><a href="/scala-typesafeequals/" class="brand background-mask"><div class="icon-wrapper"></div><span class="brand-title">Type Safe Equals</span></a></div><div class="navigation-menu"><ul><li><a href="https://github.com/er1c/scala-typesafeequals" target="_blank" rel="noopener noreferrer"><i class="nav-item-icon fa fa-lg fa-github" hidden="true"></i><span class="nav-item-text">GitHub</span></a></li><li><a href="https://er1c.github.io/scala-typesafeequals/api/"><i class="nav-item-icon fa fa-lg fa-file-text" hidden="true"></i><span class="nav-item-text">Documentation</span></a></li></ul></div></div></nav><header id="masthead"><div class="container text-center"><h1 class="masthead-description">Macro-based typesafe === and =!= operators</h1><a href="https://github.com/er1c/scala-typesafeequals" target="_blank" rel="noopener noreferrer" class="masthead-button">View on GitHub</a></div></header><nav class="menu-container" aria-labelledby="section-navigation"><div id="horizontal-menu"><ul class="horizontal-nav"><li><a class=" active " href="/scala-typesafeequals/"></a></li><li><a class="" href="/scala-typesafeequals/extra_md/CHANGELOG.html">Change Log</a></li><li><a class="" href="/scala-typesafeequals/extra_md/CODE_OF_CONDUCT.html">Code of Conduct</a></li><li><a class="" href="/scala-typesafeequals/extra_md/LICENSE.html">License</a></li></ul></div></nav><main id="site-main"><section class="main-content"><div class="container"><div id="content"><h1 id="type-safe-equals">Type Safe Equals</h1>
+<!DOCTYPE html><html><head><title>Type Safe Equals</title><meta charset="utf-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="author" content="Eric Peters" /><meta name="description" content="Macro-based typesafe === and =!= operators" /><meta name="og:image" content="/scala-typesafeequals/img/poster.png" /><meta name="image" property="og:image" content="/scala-typesafeequals/img/poster.png" /><meta name="og:title" content="Type Safe Equals" /><meta name="title" property="og:title" content="Type Safe Equals" /><meta name="og:site_name" content="Type Safe Equals" /><meta name="og:url" content="https://er1c.github.io/scala-typesafeequals/" /><meta name="og:type" content="website" /><meta name="og:description" content="Macro-based typesafe === and =!= operators" /><link rel="icon" type="image/png" href="/scala-typesafeequals/img/favicon.png" /><meta name="twitter:title" content="Type Safe Equals" /><meta name="twitter:image" content="https://er1c.github.io/scala-typesafeequals/img/poster.png" /><meta name="twitter:description" content="Macro-based typesafe === and =!= operators" /><meta name="twitter:card" content="summary_large_image" /><meta name="twitter:creator" content="@ericpeters" /><link rel="icon" type="image/png" sizes="16x16" href="/scala-typesafeequals/img/favicon16x16.png" /><link rel="icon" type="image/png" sizes="24x24" href="/scala-typesafeequals/img/favicon24x24.png" /><link rel="icon" type="image/png" sizes="32x32" href="/scala-typesafeequals/img/favicon32x32.png" /><link rel="icon" type="image/png" sizes="48x48" href="/scala-typesafeequals/img/favicon48x48.png" /><link rel="icon" type="image/png" sizes="57x57" href="/scala-typesafeequals/img/favicon57x57.png" /><link rel="icon" type="image/png" sizes="60x60" href="/scala-typesafeequals/img/favicon60x60.png" /><link rel="icon" type="image/png" sizes="64x64" href="/scala-typesafeequals/img/favicon64x64.png" /><link rel="icon" type="image/png" sizes="70x70" href="/scala-typesafeequals/img/favicon70x70.png" /><link rel="icon" type="image/png" sizes="72x72" href="/scala-typesafeequals/img/favicon72x72.png" /><link rel="icon" type="image/png" sizes="76x76" href="/scala-typesafeequals/img/favicon76x76.png" /><link rel="icon" type="image/png" sizes="96x96" href="/scala-typesafeequals/img/favicon96x96.png" /><link rel="icon" type="image/png" sizes="114x114" href="/scala-typesafeequals/img/favicon114x114.png" /><link rel="icon" type="image/png" sizes="120x120" href="/scala-typesafeequals/img/favicon120x120.png" /><link rel="icon" type="image/png" sizes="128x128" href="/scala-typesafeequals/img/favicon128x128.png" /><link rel="icon" type="image/png" sizes="144x144" href="/scala-typesafeequals/img/favicon144x144.png" /><link rel="icon" type="image/png" sizes="150x150" href="/scala-typesafeequals/img/favicon150x150.png" /><link rel="icon" type="image/png" sizes="152x152" href="/scala-typesafeequals/img/favicon152x152.png" /><link rel="icon" type="image/png" sizes="196x196" href="/scala-typesafeequals/img/favicon196x196.png" /><link rel="icon" type="image/png" sizes="310x310" href="/scala-typesafeequals/img/favicon310x310.png" /><link rel="icon" type="image/png" sizes="310x150" href="/scala-typesafeequals/img/favicon310x150.png" /><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" /><link rel="stylesheet" href="/scala-typesafeequals/highlight/styles/atom-one-light.css" /><link rel="stylesheet" href="/scala-typesafeequals/css/light-style.css" /></head><body class="home"><nav id="navigation" aria-labelledby="main-navigation"><div class="navbar-wrapper container"><div class="navigation-brand"><a href="/scala-typesafeequals/" class="brand background-mask"><div class="icon-wrapper"></div><span class="brand-title">Type Safe Equals</span></a></div><div class="navigation-menu"><ul><li><a href="https://github.com/er1c/scala-typesafeequals" target="_blank" rel="noopener noreferrer"><i class="nav-item-icon fa fa-lg fa-github" hidden="true"></i><span class="nav-item-text">GitHub</span></a></li><li><a href="https://er1c.github.io/scala-typesafeequals/api/"><i class="nav-item-icon fa fa-lg fa-file-text" hidden="true"></i><span class="nav-item-text">Documentation</span></a></li></ul></div></div></nav><header id="masthead"><div class="container text-center"><h1 class="masthead-description">Macro-based typesafe === and =!= operators</h1><a href="https://github.com/er1c/scala-typesafeequals" target="_blank" rel="noopener noreferrer" class="masthead-button">View on GitHub</a></div></header><nav class="menu-container" aria-labelledby="section-navigation"><div id="horizontal-menu"><ul class="horizontal-nav"><li><a class=" active " href="/scala-typesafeequals/"></a></li><li><a class="" href="/scala-typesafeequals/extra_md/CHANGELOG.html">Change Log</a></li><li><a class="" href="/scala-typesafeequals/extra_md/CODE_OF_CONDUCT.html">Code of Conduct</a></li><li><a class="" href="/scala-typesafeequals/extra_md/LICENSE.html">License</a></li></ul></div></nav><main id="site-main"><section class="main-content"><div class="container"><div id="content"><h1 id="scala-typesafeequals">scala-typesafeequals</h1>
 
-<p><a href="https://github.com/er1c/scala-typesafeequals/actions?query=branch%3Amaster+workflow%3Abuild"><img src="https://github.com/er1c/scala-typesafeequals/workflows/build/badge.svg?branch=master" alt="Build status" /></a> <a href="https://maven-badges.herokuapp.com/maven-central/io.github.er1c/scala-typesafeequals_2.13"><img src="https://maven-badges.herokuapp.com/maven-central/io.github.er1c/scala-typesafeequals_2.13/badge.svg" alt="Maven Central" /></a></p>
+<p><a href="https://github.com/er1c/scala-typesafeequals/actions?query=branch%3Amain+workflow%3A%22Continuous+Integration%22"><img src="https://github.com/er1c/scala-typesafeequals/workflows/Continuous%20Integration/badge.svg?branch=main" alt="Build" /></a> <a href="https://maven-badges.herokuapp.com/maven-central/io.github.er1c/scala-typesafeequals_2.13"><img src="https://maven-badges.herokuapp.com/maven-central/io.github.er1c/scala-typesafeequals_2.13/badge.svg" alt="Maven Central" /></a></p>
 
-<p>Macro-based typesafe === and =!= operators</p>
+<h2 id="macro-based-typesafe---isnull-isnotnull-nonnull">Macro based typesafe ===, =!=, isNull, isNotNull, nonNull</h2>
 
-<h2 id="usage">Usage</h2>
+<p>The macros provide a compile time check to ensure you never try to compare unrelated types. (e.g. <code class="highlighter-rouge">0 == ""</code>).  The macros generate the original <code class="highlighter-rouge">(a == b)</code> to avoid any extra boxing or allocations.</p>
 
-<p>The packages are published on Maven Central.</p>
+<p>Similar <code class="highlighter-rouge">.isNull</code>, <code class="highlighter-rouge">.isNotNull</code>, and <code class="highlighter-rouge">.nonNull</code> helpers are provided to avoid using <code class="highlighter-rouge">foo == null</code>.</p>
 
-<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"io.github.er1c"</span> <span class="o">%%</span> <span class="s">"scala-typesafeequals"</span> <span class="o">%</span> <span class="s">"&lt;version&gt;"</span>
+<h2 id="documentation">Documentation</h2>
+
+<p>Links:</p>
+
+<ul>
+  <li><a href="https://er1c.github.io/scala-typesafeequals/">Website</a></li>
+  <li><a href="https://er1c.github.io/scala-typesafeequals/api/">API documentation</a></li>
+</ul>
+
+<h3 id="usage">Usage</h3>
+
+<p>Add this to your <code class="highlighter-rouge">build.sbt</code>:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">libraryDependencies</span> <span class="o">+=</span> <span class="s">"io.github.er1c"</span> <span class="o">%%</span> <span class="s">"scala-typesafeequals"</span> <span class="o">%</span> <span class="s">"1.0.0-RC1"</span>
 </code></pre></div></div>
+
+<p>Cross-builds are available for Scala 2.11.12, 2.12.11 and 2.13.3.</p>
+
+<p>Find out more in the <a href="https://er1c.github.io/scala-typesafeequals">microsite</a>.</p>
+
+<h4 id="implicits">Implicits</h4>
+
+<p><a href="core/shared/src/main/scala/typesafeequals/Implicits.scala">Implicits.scala</a> is provided to extend in your own implicits object.</p>
+
+<p>To import all implicits:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">typesafeequals._</span>
+</code></pre></div></div>
+
+<p>For selective imports:</p>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">typesafeequals.TypeSafeEquals._</span>
+<span class="k">import</span> <span class="nn">typesafeequals.AnyRefNullChecks._</span>
+</code></pre></div></div>
+
+<h4 id="typesafeequals">TypeSafeEquals</h4>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">typesafeequals._</span>
+
+<span class="k">val</span> <span class="nv">a</span> <span class="k">=</span> <span class="s">"foo"</span>
+<span class="k">val</span> <span class="nv">b</span> <span class="k">=</span> <span class="s">"bar"</span>
+<span class="k">val</span> <span class="nv">i</span> <span class="k">=</span> <span class="mi">0</span>
+
+<span class="n">a</span> <span class="o">===</span> <span class="n">a</span> <span class="c1">// true</span>
+<span class="n">a</span> <span class="o">===</span> <span class="n">b</span> <span class="c1">// false</span>
+<span class="n">a</span> <span class="o">=!=</span> <span class="n">b</span> <span class="c1">// true</span>
+<span class="n">a</span> <span class="o">=!=</span> <span class="n">a</span> <span class="c1">// false</span>
+<span class="n">a</span> <span class="o">===</span> <span class="n">i</span> <span class="c1">// won't compile</span>
+<span class="n">a</span> <span class="o">=!=</span> <span class="n">i</span> <span class="c1">// won't compile</span>
+</code></pre></div></div>
+
+<h4 id="anyrefnullchecks">AnyRefNullChecks</h4>
+
+<div class="language-scala highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">import</span> <span class="nn">typesafeequals._</span>
+
+<span class="k">val</span> <span class="nv">a</span> <span class="k">=</span> <span class="s">"foo"</span>
+<span class="k">val</span> <span class="nv">b</span> <span class="k">=</span> <span class="kc">null</span>
+
+<span class="nv">a</span><span class="o">.</span><span class="py">isNull</span> <span class="c1">// false</span>
+<span class="nv">b</span><span class="o">.</span><span class="py">isNull</span> <span class="c1">// true</span>
+
+<span class="nv">a</span><span class="o">.</span><span class="py">isNotNull</span> <span class="c1">// true</span>
+<span class="nv">b</span><span class="o">.</span><span class="py">isNotNull</span> <span class="c1">// false</span>
+
+<span class="nv">a</span><span class="o">.</span><span class="py">nonNull</span> <span class="c1">// true</span>
+<span class="nv">b</span><span class="o">.</span><span class="py">nonNull</span> <span class="c1">// false</span>
+</code></pre></div></div>
+
+<h2 id="contributing">Contributing</h2>
+
+<p>The Type Safe Equals project welcomes contributions from anybody wishing to participate.  All code or documentation that is provided must be licensed with the same license that Type Safe Equals is licensed with (Apache 2.0, see <a href="./LICENSE.md">LICENCE</a>).</p>
+
+<p>People are expected to follow the <a href="./CODE_OF_CONDUCT.md">Scala Code of Conduct</a> when discussing Type Safe Equals on GitHub, Gitter channel, or other venues.</p>
+
+<p>Feel free to open an issue if you notice a bug, have an idea for a feature, or have a question about the code. Pull requests are also gladly accepted. For more information, check out the <a href="./CONTRIBUTING.md">contributor guide</a>.</p>
+
+<h2 id="license">License</h2>
+
+<p>All code in this repository is licensed under the Apache License, Version 2.0.  See <a href="./LICENSE.md">LICENCE</a>.</p>
 </div></div></section></main><footer id="site-footer"><div class="container"><div class="row"><p>Type Safe Equals is designed and developed by <a href="https://er1c.github.io/scala-typesafeequals/" target="_blank" rel="noopener noreferrer">Eric Peters</a></p></div></div></footer><script src="/scala-typesafeequals/highlight/highlight.pack.js"></script><script>
 // For all code blocks, copy the language from the containing div
 // to the inner code tag (where hljs expects it to be)
