@@ -21,17 +21,74 @@ package typesafeequals
 import org.scalatest.funsuite.AnyFunSuite
 import org.scalatest.matchers.should.Matchers
 
-class TestTypeSafeEquals extends AnyFunSuite with Matchers {
-  val nonNullString: String = "foo"
-  val nullString: String = null
+// Note: Using ≡ and ≠ to avoid conflicts with ScalaTest === method
+final class TestTypeSafeEquals extends AnyFunSuite with Matchers {
 
-  test("===") {
-    nonNullString ≡ "foo" shouldBe true
-    nonNullString ≡ "bar" shouldBe false
+  test("Basics") {
+    1 ≡ 1 shouldBe true
+    1 ≠ 1 shouldBe false
+
+    "foo" ≡ "bar" shouldBe false
+    "foo" ≠ "bar" shouldBe true
+
+    "1d ≡ 1" shouldNot compile
+    "1 ≡ 1d" shouldNot compile
+
+    "1 ≡ Option(1)" shouldNot compile
+    "Option(1) ≡ 1" shouldNot compile
+
+    """"foo" ≡ Option("foo")""" shouldNot compile
+    """Option("foo") ≡ "foo""" shouldNot compile
   }
 
-  test("=!=") {
-    nonNullString ≠ "foo" shouldBe false
-    nonNullString ≠ "bar" shouldBe true
+  test("nulls") {
+    val nullStr: String = null
+    val nonNullStr: String = "non-null"
+
+    nullStr ≡ null shouldBe true
+    nullStr ≠ null shouldBe false
+
+    nonNullStr ≡ null shouldBe false
+    nonNullStr ≠ null shouldBe true
+
+    // Can't get the implicits to work for these to compile:
+
+//    null ≡ nullStr shouldBe true
+//    null ≠ nullStr shouldBe false
+
+//    null ≡ null shouldBe true
+//    null ≠ null shouldBe false
+
+    """null ≡ 1""" shouldNot compile
+    """null ≠ 1""" shouldNot compile
+    """1 ≡ null""" shouldNot compile
+    """1 ≠ null""" shouldNot compile
   }
+
+  test("Subtypes") {
+    """1 ≡ Foo("foo")""" shouldNot compile
+    """Foo("foo") ≡ 1""" shouldNot compile
+
+    Foo("foo") ≡ Foo("bar") shouldBe false
+    Foo("foo") ≠ Foo("bar") shouldBe true
+
+    val fooAsBase: Base = Foo("foo")
+    val foo: Foo = Foo("foo")
+
+    val barAsBase: Base = Bar(123)
+    val bar: Bar = Bar(123)
+
+    fooAsBase ≡ foo shouldBe true
+    foo ≡ fooAsBase shouldBe true
+
+    fooAsBase ≠ barAsBase shouldBe true
+    fooAsBase ≠ bar shouldBe true
+
+    "foo ≡ bar" shouldNot compile
+    "bar ≡ foo" shouldNot compile
+  }
+
+  sealed trait Base
+  case class Foo(foo: String) extends Base
+  case class Bar(bar: Int) extends Base
 }
