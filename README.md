@@ -23,6 +23,11 @@ Add this to your `build.sbt`:
 libraryDependencies += "io.github.er1c" %% "scala-typesafeequals" % "1.0.0" % Compile
 ```
 
+For Scala.js
+```scala
+libraryDependencies += "io.github.er1c" %%% "scala-typesafeequals" % "1.0.0" % Compile
+```
+
 Cross-builds are available for Scala 2.11.12, 2.12.11 and 2.13.3.
 
 Find out more in the [microsite](https://er1c.github.io/scala-typesafeequals).
